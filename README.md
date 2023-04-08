@@ -1,31 +1,35 @@
-# bgfx.cmake
-[![Build Status](https://github.com/bkaradzic/bgfx.cmake/workflows/Release/badge.svg)](https://github.com/bkaradzic/bgfx.cmake/workflows/Release/badge.svg)
-
-**NOTE: This port only made to be used as C++ library, some features (such as bindings) might not work! For those features, please use original repo with GENie instead.**
+# bgfx_cmake
 
 This repo contains cmake configuration files that can be used to build bgfx with CMake.
 
 ## Building
 
 ```bash
-git clone https://github.com/bkaradzic/bgfx.cmake.git
-cd bgfx.cmake
+git submodule add -b master https://github.com/DendyA/bgfx.cmake.git {folder_to_store}
+cd {folder_to_store}
 git submodule init
 git submodule update
-cmake -S. -Bcmake-build # $CMakeOptions
-cmake --build cmake-build
+```
+The top command will download the bgfx_cmake project as a submodule to the root project. The last two commands will init and pull in the tracked commit in the bgfx, bimg, and bx submodules in this submodule.
+
+Once initialized and downloaded, this project (and the subsequent bgfx library and its dependencies) can be included into the root project by adding the following two lines to the root project's CMakeLists.txt.
+
+```cmake
+ADD_SUBDIRECTORY({path_from_root_project's_CMakeLists.txt_to_cmake_bgfx_folder})
+
+TARGET_LINK_LIBRARIES({TARGET_NAME} {PUBLIC|PRIVATE|INTERFACE}
+        bgfx
+)
 ```
 
-If downloading via zip (instead of using git submodules) manually download bx, bimg and bgfx and copy them into the root directory, or locate them via `BX_DIR`, `BIMG_DIR` and `BGFX_DIR` CMake variables.
+One note is that the ```TARGET_LINK_LIBRARIES``` needs to be added after either a call to ```ADD_LIBRARY``` or ```ADD_EXECUTABLE``` in the root project's CMakeLists.txt. And ```ADD_SUBDIRECTORY``` needs to be added before ```ADD_LIBRARY``` or ```ADD_EXECUTABLE```.
 
-## How To Use
-This project is setup to be included a few different ways. To include bgfx source code in your project simply use add_subdirectory to include this project. To build bgfx binaries build the `INSTALL` target (or `make install`). The installed files will be in the directory specified by `CMAKE_INSTALL_PREFIX` which we recommend you set to `./install` so it will export to your build directory. Note you may want to build install on both `Release` and `Debug` configurations.
+Another note is that in the code example above, the {}s need to be replaced with your project specific information.
 
 ## Features
 * No outside dependencies besides bx, bimg, bgfx, and CMake.
 * Tested on
-    * Windows, OSX, Linux, Android, UWP, Emscripten (experimental)
-    * VSCode, Visual Studio, Xcode, gcc, clang.
+    * Linux (Ubuntu 22.04)
 * Compiles bgfx, tools & examples.
 * Detects shader modifications and automatically rebuilds them for all examples.
 
@@ -141,6 +145,3 @@ target_include_directories(myLib ${CMAKE_BINARY_DIR}/include/generated/shaders)
 const bgfx::EmbeddedShader k_vs = BGFX_EMBEDDED_SHADER(vs);
 const bgfx::EmbeddedShader k_fs = BGFX_EMBEDDED_SHADER(fs);
 ```
-
-## Does this work with latest bx/bgfx/bimg?
-Probably! This project needs to be updated if a dependency is added or the bgfx build system changes. The bgfx repository is very active but these types of changes are rare. New examples have to be added manually as well, but not doing so will merely result in that example not showing up and won't break anything else. If pulling latest causes issues, be sure to manually reconfigure CMake as the glob patterns may need to be refreshed (the use of glob patterns in CMake is generally discouraged but in this project it helps to ensure upwards compatibilty with newer bgfx updates).
