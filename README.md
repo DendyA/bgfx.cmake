@@ -26,6 +26,10 @@ One note is that the ```TARGET_LINK_LIBRARIES``` needs to be added after either 
 
 Another note is that in the code example above, the {}s need to be replaced with your project specific information.
 
+## Config
+
+As an example, the root CMakeLists.txt allows for a minimum OpenGL version to be set. This is done by setting the ```BGFX_OPENGL_VERSION``` variable. When targeting a specific version, remove the period in the version number. So if OpenGL 4.4 is to be targeted, set ```BGFX_OPENGL_VERSION``` to ```44```.
+
 ## Features
 * No outside dependencies besides bx, bimg, bgfx, and CMake.
 * Tested on

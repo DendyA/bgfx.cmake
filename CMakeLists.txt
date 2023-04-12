@@ -48,7 +48,7 @@ option(BGFX_CONFIG_MULTITHREADED "Build bgfx with multithreaded configuration" O
 option(BGFX_CONFIG_RENDERER_WEBGPU "Enable the webgpu renderer" OFF)
 option(BGFX_CONFIG_DEBUG_ANNOTATION "Enable gfx debug annotations (default: on in debug)" OFF)
 
-set(BGFX_OPENGL_VERSION "" CACHE STRING "Specify minimum opengl version")
+set(BGFX_OPENGL_VERSION "44" CACHE STRING "Specify minimum opengl version")
 set(BGFX_OPENGLES_VERSION "" CACHE STRING "Specify minimum OpenGL ES version")
 set(BGFX_LIBRARY_TYPE "STATIC" CACHE STRING "Linking type for library")
 set_property(CACHE BGFX_LIBRARY_TYPE PROPERTY STRINGS "STATIC" "SHARED")
